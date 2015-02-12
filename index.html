@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+    <title>REST microservices in Scala</title>
+
+    <meta name="description" content="REST microservices in Scala">
+    <meta name="author" content="Jacek Laskowski">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+      <div class="slides">
+        <section class="intro" data-transition="zoom">
+          <h1>REST (micro)services in Scala</h1>
+          <h3>Play, Spray, akka-http with JSON</h3>
+          <h4>(1-hour session)</h4>
+          <br>
+          <p>
+            <small>Created by <a href="http://blog.jaceklaskowski.pl">Jacek Laskowski</a> / <a href="http://twitter.com/jaceklaskowski">@jaceklaskowski</a></small>
+          </p>
+        </section>
+
+        <section>
+
+          <h2>Microservices (by Wikipedia)</h2>
+
+          <section>
+            <blockquote cite="http://en.wikipedia.org/wiki/Microservices" style="max-width: none; width: 100%">
+              &ldquo;In computing, <b>microservices</b> is <b>a software architecture design pattern</b>, in which complex applications are composed of <b>small, independent processes</b> communicating with each other using <b>language-agnostic APIs</b>. These <b>services</b> are small, highly <b>decoupled</b> and focus on doing a small task.&rdquo;
+            </blockquote>
+          </section>
+
+          <section>
+            <p style="text-align: left; max-width: none; width: 100%">
+              Properties of the Microservices architecture:
+              <ul >
+                <li>The services are easy to replace</li>
+                <li>Services are organized around capabilities, e.g. user interface frontend, recommendation, logistics, billing, etc.</li>
+                <li>A microservices-based architecture
+                  <ul>
+                    <li>a continuous delivery software development process</li>
+                    <li>Service-oriented architecture (SOA) for integrating various (business) applications whereas microservices for one application only</li>
+                  </ul>
+                </li>
+              </ul>
+            </p>
+          </section>
+
+        </section>
+
+        <section>
+
+          <h2>Microservices (by Martin Fowler)</h2>
+
+          <section>
+            <br><br>
+            <blockquote cite="http://martinfowler.com/articles/microservices.html" style="max-width: none; width: 100%">
+              &ldquo;The term <em class="fragment highlight-blue">"Microservice Architecture"</em> has sprung up over the last few years to describe <em class="fragment highlight-blue">a particular way of designing software applications</em> as <em class="fragment highlight-blue">suites of independently deployable services</em>. While there is <em class="fragment highlight-blue">no precise definition</em> of this <em class="fragment highlight-blue">architectural style</em>, there are certain common characteristics around <em class="fragment highlight-blue">organization around business capability</em>, <em class="fragment highlight-blue">automated deployment</em>, <em class="fragment highlight-blue">intelligence in the endpoints</em>, and <em class="fragment highlight-blue">decentralized control of languages and data</em>.&rdquo;
+            </blockquote>
+          </section>
+
+          <section>
+            <br><br>
+            <p style="text-align: left; max-width: none; width: 100%">
+              <ul >
+                <li>Microservice Architecture</li>
+                <li>a particular way of designing software applications</li>
+                <li>suites of independently deployable services</li>
+                <li>no precise definition</li>
+                <li>architectural style</li>
+                <li>organization around business capability</li>
+                <li>automated deployment</li>
+                <li>intelligence in the endpoints</li>
+                <li>decentralized control of languages and data</li>
+              </ul>
+            </p>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h1>Demo time</h1>
+            <h3>Play Framework</h3>
+          </section>
+          <section data-markdown style="text-align: left; max-width: none; width: 100%">
+            <script type="text/template">
+  ## Microservices in Play
+
+  * `activator new play-microservices-demo play-scala`
+  * `cd play-microservices-demo`
+  * `activator run`
+  * Open http://localhost:9000
+    * browser or `curl` or `httpie`?
+            </script>
+          </section>
+
+          <section>
+            <h2>Is what you've seen...</h2>
+            <h1 class="fragment">a microservice?</h1>
+            <h2 class="fragment">Perhaps!</h2>
+          </section>
+
+          <section style="text-align: left; max-width: none; width: 100%">
+            <h2>REST microservices in Play</h2>
+
+            <ul>
+              <li>Keep <a href="http://localhost:9000">http://localhost:9000</a> open and refresh at will</li>
+              <li class="fragment">Throw in JSON support
+                <ul>
+                  <li class="fragment">Add <em>/api/person</em> endpoint</li>
+                </ul>
+              </li>
+              <li class="fragment"><code>http -v --json localhost:9000/api/person</code></li>
+              <li class="fragment"><code>http -v --json localhost:9000/api/person name=tomek</code></li>
+            </ul>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h1>Demo time</h1>
+            <h3>Spray (akka-http)</h3>
+          </section>
+          <section data-markdown style="text-align: left; max-width: none; width: 100%">
+            <script type="text/template">
+  ## Microservices in Spray
+
+  * `git clone https://github.com/spray/spray-template.git spray-routing`
+  * `cd spray-routing`
+  * `sbt ~reStart`
+  * Use `http` to get at http://localhost:9000
+            </script>
+          </section>
+        </section>
+
+        <section data-background-image="images/end.jpg">
+          <!-- THAT'S IT FOLKS -->
+        </section>
+
+        <section style="text-align: left">
+          <h1>Questions?</h1>
+          <h3><a href="https://blog.jaceklaskowski.pl">Jacek Laskowski</a> / <a href="https://twitter.com/jaceklaskowski">@jaceklaskowski</a> / <a href="https://github.com/jaceklaskowski">GitHub</a></h3>
+        </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

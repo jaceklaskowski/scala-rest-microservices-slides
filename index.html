@@ -44,23 +44,22 @@
           <h1>Going REACTIVE!</h1>
           <h4>Play, Spray/akka-http, JSON and Future[T]</h4>
           <br>
-          <p>
-            <small>Created by <a href="http://blog.jaceklaskowski.pl">Jacek Laskowski</a> / <a href="http://twitter.com/jaceklaskowski">@jaceklaskowski</a></small>
-          </p>
+          <h3><a href="https://blog.jaceklaskowski.pl">Jacek Laskowski</a> / <a href="https://twitter.com/jaceklaskowski">@jaceklaskowski</a> / <a href="https://github.com/jaceklaskowski">GitHub</a></h3>
         </section>
 
         <section>
           <section>
-            <h2>About me...Jacek Laskowski</h2>
+            <h2>About me...<a href="https://twitter.com/jaceklaskowski">@JacekLaskowski</a></h2>
             <p>
-              <img border="0" width="25%" src="images/jacek_laskowski_20141201_512px.png">
+              <img width="20%" src="images/jacek_laskowski_20141201_512px.png">
             </p>
             <ul>
-              <li>Scala developer, advocate and course instructor</li>
+              <li>Self-employed at <a href="https://www.linkedin.com/in/jaceklaskowski">Japila Software</a> => jacek@japila.pl</li>
+              <li>Delivering Development Services | Consulting | Training</li>
+              <li>Technical team leader in Codilime - <a href="http://deepsense.io/">DeepSense.io</a> project</li>
               <li>Founder and leader of <a href="warsawscala.pl">Warsaw Scala Enthusiasts</a></li>
-              <li>Developing teams and software</li>
               <li><a href="https://java.net/website/java-champions/bios.html#Laskowski">Java Champion</a></li>
-              <li>Blogs at <a href="http://blog.jaceklaskowski.pl">blog.jaceklaskowski.pl</a> and <a href="http://jaceklaskowski.pl">jaceklaskowski.pl</a></li>
+              <li>Blogger at <a href="http://blog.jaceklaskowski.pl">blog.jaceklaskowski.pl</a> and <a href="http://jaceklaskowski.pl">jaceklaskowski.pl</a></li>
             </ul>
           </section>
           <section>
@@ -74,8 +73,7 @@
             <script type="text/template">
 ## What's in
 # concurrent.Future[T]
-## for Scala developers
-# in Warsaw, Poland?
+## in Scala?
             </script>
           </section>
           <section data-markdown>
@@ -96,6 +94,9 @@
 <img width="90%" src="images/future-collect-data-from-remote-server.png">
             </script>
           </section>
+        </section>
+
+        <section>
           <section data-transition="zoom" data-markdown>
             <script type="text/template">
 <!-- .slide: data-background="images/companies-hiring.png" -->
@@ -106,26 +107,69 @@
         </section>
 
         <section>
-          <section>
-            <h1>Play Framework</h1>
-            <h3>Latest version: 2.3.8</h3>
-          </section>
-          <section data-markdown style="text-align: left; max-width: none; width: 100%">
+          <section data-transition="zoom" data-markdown>
             <script type="text/template">
-## Microservices in Play
+# The Reactive Manifesto
 
-* `activator new play-microservices-demo play-scala`
-* `cd play-microservices-demo`
-* `activator run`
-* Open http://localhost:9000
-  * browser or `httpie` (no more `curl`, please)
+http://www.reactivemanifesto.org/
             </script>
           </section>
+          <section data-markdown>
+            <script type="text/template">
+## Traits of Reactive Systems (1 of 4)
+
+# Responsive
+
+* Rapid, timely and consistent response times.
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+## Traits of Reactive Systems (2 of 4)
+
+# Resilient
+
+* Responsive in the face of failure.
+* Replicated, contained, isolated, delegation-based
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+## Traits of Reactive Systems (3 of 4)
+
+# Elastic
+
+* Increasing or decreasing the resources allocated to service inputs.
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+## Traits of Reactive Systems (4 of 4)
+
+# Message Driven
+
+* asynchronous message-passing
+* loose coupling, location transparency, and delegate errors as messages
+            </script>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h1>Play Framework</h1>
+            <h3>Latest version: 2.3.9</h3>
+            <a href="https://www.playframework.com/">https://www.playframework.com</a>
+          </section>
           <section data-markdown style="text-align: left; max-width: none; width: 100%">
             <script type="text/template">
-## Need help?
+## How to...Microservices in Play
 
-* Use [@documentation](http://localhost:9000/@documentation/Home) early and often
+* **activator new** play-microservices-demo
+  * Select **play-scala** template
+* cd play-microservices-demo
+* **activator run**
+* Open http://localhost:9000
+  * browser or **httpie** (no more `curl`, please)
             </script>
           </section>
           <section data-markdown style="max-width: none; width: 100%">
@@ -143,6 +187,10 @@ POST    /api/person      controllers.Application.savePerson
 ## GET /api/person
 
 ```
+// object Application extends Controller
+
+import play.api.libs.json.Json
+
 case class Person(name: String)
 object Person {
   implicit val personFmt = Json.format[Person]
@@ -157,22 +205,79 @@ def listPersons() = Action {
           </section>
           <section data-markdown style="max-width: none; width: 100%">
             <script type="text/template">
+## http localhost:9000/api/person
+
+```
+http localhost:9000/api/person
+```
+
+```
+➜  play-microservices-demo  http localhost:9000/api/person
+HTTP/1.1 200 OK
+Content-Length: 16
+Content-Type: application/json; charset=utf-8
+
+{
+    "name": "jacek"
+}
+```
+<!-- .element: class="fragment roll-in" -->
+
+            </script>
+          </section>
+          <section data-markdown style="max-width: none; width: 100%">
+            <script type="text/template">
 ## POST /api/person
 
 ```
+// object Application extends Controller
+
+import play.api.libs.json.JsError
+
 def savePerson() = Action(BodyParsers.parse.json) { request =>
-  val personResult = request.body.validate[Person]
-  personResult.fold(
-    errors => {
-      BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toFlatJson(errors)))
-    },
+  request.body.validate[Person].fold(
+    errors =>
+      BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toFlatJson(errors))),
     person => {
       Person.savePerson(person) // <-- saving to persistent storage
-      Ok(Json.obj("status" ->"OK", "message" -> ("Person '"+person.name+"' saved.") ))
-    }
-  )
+      Ok(Json.obj("status" ->"OK", "message" -> ("Person '"+person.name+"' saved.")))
+    })
+}
+
+object Person {
+  implicit val personFmt = Json.format[Person]
+
+  var list = Seq(Person("jacek"))
+
+  def savePerson(p: Person) = {
+    list = list :+ p
+  }
 }
 ```
+<!-- .element: class="stretch" -->
+            </script>
+          </section>
+          <section data-markdown style="max-width: none; width: 100%">
+            <script type="text/template">
+## http POST localhost:9000/api/person
+
+```
+http POST localhost:9000/api/person name=jacek
+```
+
+```
+➜  play-microservices-demo  http POST localhost:9000/api/person name=jacek
+HTTP/1.1 200 OK
+Content-Length: 49
+Content-Type: application/json; charset=utf-8
+
+{
+    "message": "Person 'jacek' saved.",
+    "status": "OK"
+}
+```
+<!-- .element: class="fragment roll-in" -->
+
             </script>
           </section>
           <section style="text-align: left; max-width: none; width: 100%">
@@ -219,23 +324,27 @@ def hello = Action.async { request =>
 See [play.api.mvc.Action](https://www.playframework.com/documentation/2.3.6/api/scala/index.html#play.api.mvc.Action$) API
             </script>
           </section>
+          <section data-markdown style="text-align: left; max-width: none; width: 100%">
+            <script type="text/template">
+## Need help?
+
+* Use [@documentation](http://localhost:9000/@documentation/Home) early and often
+            </script>
+          </section>
         </section>
 
         <section>
           <section>
             <h1>Spray</h1>
             <h3>Latest version: 1.3.3</h3>
-            <h2>Watch out Akka HTTP</h2>
+            <a href="http://spray.io/">http://spray.io</a>
           </section>
-          <section data-markdown style="text-align: left; max-width: none; width: 100%">
-            <script type="text/template">
-  ## Microservices in Spray
-
-  * `git clone https://github.com/spray/spray-template.git spray-routing`
-  * `cd spray-routing`
-  * `sbt ~reStart`
-  * Use `http` to get at http://localhost:9000
-            </script>
+          <section>
+            <img src="images/spray-intro.png">
+            <ul>
+              <li><b>spray-can</b> = fully asynchronous HTTP server</li>
+              <li>Routing DSL to describe REST API</li>
+            </ul>
           </section>
           <section data-markdown style="max-width: none; width: 100%">
             <script type="text/template">
@@ -261,7 +370,23 @@ path("") {
   }
 }
 ```
+<!-- .element: class="stretch" -->
             </script>
+          </section>
+          <section data-markdown style="text-align: left; max-width: none; width: 100%">
+            <script type="text/template">
+  ## Microservices in Spray
+
+  * `git clone https://github.com/spray/spray-template.git spray-microservices-demo`
+  * `cd spray-microservices-demo`
+  * `sbt ~reStart`
+  * Open http://localhost:8080
+    * Use browser or `http`ie (no more `curl`, please)
+            </script>
+          </section>
+          <section>
+            <h2>http://localhost:8080</h2>
+            <img src="images/spray-say-hello-demo.png">
           </section>
           <section data-markdown>
             <script type="text/template">
@@ -270,7 +395,25 @@ path("") {
 **build.sbt**
 
 ```
-libraryDependencies += "io.spray" %% "spray-json" % "1.3.1"
+libraryDependencies += "io.spray" %% "spray-json" % "1.3.2"
+```
+            </script>
+          </section>
+          <section data-markdown style="max-width: none; width: 100%">
+            <script type="text/template">
+## JSON...ification
+
+```
+import spray.httpx.SprayJsonSupport
+import spray.json.DefaultJsonProtocol
+
+case class Person(name: String)
+object PersonJsonSupport extends DefaultJsonProtocol
+    with SprayJsonSupport {
+
+  implicit val serviceFormat = jsonFormat1(Person)
+
+}
 ```
             </script>
           </section>
@@ -279,22 +422,41 @@ libraryDependencies += "io.spray" %% "spray-json" % "1.3.1"
 ## GET /api/person (with JSON)
 
 ```
-case class Person(name: String)
-object PersonJsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
-  implicit val serviceFormat = jsonFormat1(Person)
-}
+trait MyService extends HttpService {
 
-// later in the code
-
-pathPrefix("api" / "person") {
-  import PersonJsonSupport._
-  get {
-    complete(Person("jacek"))
-  }
+  val myRoute =
+    pathPrefix("api" / "person") {
+      import PersonJsonSupport._
+      get {
+        complete(Person("jacek"))
+      }
+    }
 }
 ```
+            </script>
+          </section>
+          <section data-markdown style="max-width: none; width: 100%">
+            <script type="text/template">
+## http -j localhost:8080/api/person
 
-`http -v -j localhost:8080/api/person`
+```
+http -j localhost:8080/api/person
+```
+
+```
+➜  spray-microservices-demo http -j localhost:8080/api/person
+HTTP/1.1 200 OK
+Content-Length: 21
+Content-Type: application/json; charset=UTF-8
+Date: Fri, 22 May 2015 05:17:36 GMT
+Server: spray-can/1.3.3
+
+{
+    "name": "jacek"
+}
+```
+<!-- .element: class="fragment roll-in" -->
+
             </script>
           </section>
           <section data-markdown style="max-width: none; width: 100%">
@@ -302,18 +464,7 @@ pathPrefix("api" / "person") {
 ## POST /api/person (with JSON)
 
 ```
-case class Person(name: String)
-object PersonJsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
-  implicit val serviceFormat = jsonFormat1(Person)
-}
-
-// later in the code
-
 pathPrefix("api" / "person") {
-  import PersonJsonSupport._
-  get {
-    complete(Person("jacek"))
-  } ~
   post {
     entity(as[Person]) { p =>
       complete(p.copy(name = p.name.toUpperCase))
@@ -322,7 +473,32 @@ pathPrefix("api" / "person") {
 }
 ```
 
-`http -v localhost:8080/api/person name=adam`
+* [entity](http://spray.io/documentation/1.2.3/spray-routing/marshalling-directives/entity/) = Unmarshalls the request entity and passes it on.
+            </script>
+          </section>
+          <section data-markdown style="max-width: none; width: 100%">
+            <script type="text/template">
+## http localhost:8080/api/person
+### name=jacek
+
+```
+http localhost:8080/api/person name=jacek
+```
+
+```
+➜  spray-microservices-demo http localhost:8080/api/person name=jacek
+HTTP/1.1 200 OK
+Content-Length: 21
+Content-Type: application/json; charset=UTF-8
+Date: Fri, 22 May 2015 06:40:14 GMT
+Server: spray-can/1.3.3
+
+{
+    "name": "JACEK"
+}
+```
+<!-- .element: class="fragment roll-in" -->
+
             </script>
           </section>
           <section data-markdown>
@@ -352,7 +528,7 @@ pathPrefix("api" / "person") {
 
         <section style="text-align: left">
           <h1>Questions?</h1>
-          <h4><a href="https://blog.jaceklaskowski.pl">Jacek Laskowski</a> / <a href="https://twitter.com/jaceklaskowski">@jaceklaskowski</a> / <a href="https://github.com/jaceklaskowski">GitHub</a></h4>
+          <h3><a href="https://blog.jaceklaskowski.pl">Jacek Laskowski</a> / <a href="https://twitter.com/jaceklaskowski">@jaceklaskowski</a> / <a href="https://github.com/jaceklaskowski">GitHub</a></h3>
         </section>
 
 			</div>
